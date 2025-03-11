@@ -49,8 +49,9 @@ To set the interface to **8080 Parallel**, make sure that #define PARALLEL_8080 
 | 32    (PSB)       | GND               | VDD                | Selects SPI or Parallel          |
 | 33-34 (NC)        | DNC               | DNC                | See schematic for more details   |
 
-The build files including the schematic can be downloaded from here: https://www.crystalfontz.com/products/document/3516/CFA_10072v0p1_BUILD_PACKAGE.zip
-The controller datasheet can be found here: https://www.crystalfontz.com/controllers/Sitronix/ST7567/
+The build files including the schematic can be downloaded 
+    [on our site.](https://www.crystalfontz.com/products/document/3516/CFA_10072v0p1_BUILD_PACKAGE.zip) \
+The controller datasheet can be found here: [Sitronix ST7567](https://www.crystalfontz.com/controllers/Sitronix/ST7567/)
 
 
 
