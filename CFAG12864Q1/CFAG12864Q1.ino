@@ -9,6 +9,29 @@
 //
 // Breakout board is Crystalfontz PCB 10072
 //   
+//| CFAG12864Q1   | Seeeduino| Seeeduino | Seeduino |       Connection                  |
+//|     Pin       |  Pin SPI |  Pin 8080 | Pin 6800 |       Description                 |
+//|---------------|----------|-----------|----------|-----------------------------------|
+//| 1     (CSB)   | D10      | A0        | A0       | Chip Select                       |
+//| 2     (RSTB)  | A1       | A1        | A1       | Reset                             |
+//| 3     (A0)    | A3       | A3        | A3       | Data/Command                      |
+//| 4     (RWR)   | DNC      | (WR) A2   | (RWR) A2 | Read/Write 6800 H = Read L = Write|
+//|               |          |           |          | -or- Write 8080                   |
+//| 5     (ERD)   | DNC      | (RD) A4   | (E) A4   | Enable 6800 -or- Read 8080        |
+//| 6-11  (D0-D5) | D0-D5    | D0-D5     | D0-D5    | Data Pins 0-5                     |
+//| 12    (D6)    | SCK      | D6        | D6       | Data Pin 6 / SCK                  |
+//| 13    (D7)    | MOSI     | D7        | D7       | Data Pin 7 / MOSI                 |
+//| 14    (VDD)   | 3.3V     | 3.3V      | 3.3V     | Power                             |
+//| 15    (GND)   | GND      | GND       | GND      | Ground                            |
+//| 16-20 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
+//| 21    (V0)    | DNC      | DNC       | DNC      | LCD driving voltage - negative    |
+//| 22    (XV0)   | DNC      | DNC       | DNC      | LCD driving voltage - positive    |
+//| 23-24 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
+//| 25    (VG)    | DNC      | DNC       | DNC      | LCD driving voltage - segments    |
+//| 26-30 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
+//| 31    (C86)   | GND      | GND       | VDD      | Selects 8080 or 6800 in Parallel  |
+//| 32    (PSB)   | GND      | VDD       | VDD      | Selects SPI or Parallel           |
+//| 33-34 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
 //
 //============================================================================
 #include <avr/io.h>
@@ -25,10 +48,23 @@
 //
 // *********SET INTERFACE*********
 // Can be SPI or PARALLEL
-#define SPI_4W
-#define PARALLEL_8080
+//#define SPI_4W
+//#define PARALLEL_8080
+//#define PARALLEL_6800
+
+#ifndef SPI_4W
+ #ifndef PARALLEL_8080
+  #ifndef PARALLEL_6800
+   #error "You must define an interface"
+  #endif
+ #endif
+#endif
+
+#if defined(SPI_4W) & defined(PARALLEL_8080) & defined(PARALLEL_6800) || defined(SPI_4W) & defined(PARALLEL_8080) || defined(SPI_4W) & defined(PARALLEL_6800) || defined(PARALLEL_8080) & defined(PARALLEL_6800)
+ #error "You can only define one interface"
+#endif
 // 
-// Parallel mode is 8080 in this demo - C86 needs to be pulled LOW
+// 
 // 
 //============================================================================
 #ifdef SPI_4W
@@ -95,7 +131,48 @@
 #define SET_BL    (PORTB |=  (0x02))
 #endif //PARALLEL_8080
 
+#ifdef PARALLEL_6800
+// LCD Data is connected to port D
+//   ARD  | Port | LCD
+//  #0/D0 |  PD0 | LCD_D0
+//  #1/D1 |  PD1 | LCD_D1 
+//  #2/D2 |  PD2 | LCD_D2
+//  #3/D3 |  PD3 | LCD_D3
+//  #4/D4 |  PD4 | LCD_D4
+//  #5/D5 |  PD5 | LCD_D5
+//  #6/D6 |  PD6 | LCD_D6
+//  #7/D7 |  PD7 | LCD_D7
+//
+#define LCD_DATA    (PORTD)
+//
+// LCD control lines
+//   ARD  | Port | LCD
+// #14/A0 |  PC0 | LCD_CS_NOT
+// #15/A1 |  PC1 | LCD_RES_NOT
+// #16/A2 |  PC2 | LCD_NOT_WR
+// #17/A3 |  PC3 | LCD_A0
+// #18/A4 |  PC4 | LCD_NOT_RD
+//
+#define CLR_CS    (PORTC &= ~(0x01))
+#define SET_CS    (PORTC |=  (0x01))
+#define CLR_RESET (PORTC &= ~(0x02))
+#define SET_RESET (PORTC |=  (0x02))
+#define CLR_RWR    (PORTC &= ~(0x04))
+#define SET_RWR    (PORTC |=  (0x04))
+#define CLR_A0    (PORTC &= ~(0x08))
+#define SET_A0    (PORTC |=  (0x08))
+//#define CLR_E    (PORTC &= ~(0x10))
+#define SET_E    (PORTC |=  (0x10))
+//
+// LCD backlight control
+//   ARD  | Port | LCD
+//  #9/D9 |  PB1 | LCD_BL
+//
+#define CLR_BL    (PORTB &= ~(0x02))
+#define SET_BL    (PORTB |=  (0x02))
 
+
+#endif
 
 //
 //============================================================================
@@ -252,6 +329,30 @@ void lcd_data_send(uint8_t data)
   SET_WR;
   }
 #endif //PARALLEL_8080
+
+#ifdef PARALLEL_6800
+void lcd_cmd_send(uint8_t data)
+  {
+  // Press the data onto the port (~250nS setup)
+  LCD_DATA = data;
+  // Select the LCD's command register (~125nS setup)
+  CLR_A0;
+  // Make a low pulse on RWR to clock the data (~125nS pulse width)
+  CLR_RWR;
+  SET_RWR;
+  }
+//----------------------------------------------------------------------------
+void lcd_data_send(uint8_t data)
+  {
+  // Press the data onto the port (~250nS setup)
+  LCD_DATA = data;
+  // Select the LCD's data register (~125nS setup)
+  SET_A0;
+  // Make a low pulse on RWR to clock the data (~125nS pulse width)
+  CLR_RWR;
+  SET_RWR;
+  }
+#endif //PARALLEL_6800
 
 
 //----------------------------------------------------------------------------
@@ -445,6 +546,46 @@ void setup()
   CLR_A0;
   SET_RD;
   #endif //PARALLEL_8080
+
+  #ifdef PARALLEL_6800
+  //Set the port directions
+  // LCD Data is connected to port D
+  //   ARD  | Port | LCD
+  //  #0/D0 |  PD0 | LCD_D0
+  //  #1/D1 |  PD1 | LCD_D1 
+  //  #2/D2 |  PD2 | LCD_D2
+  //  #3/D3 |  PD3 | LCD_D3
+  //  #4/D4 |  PD4 | LCD_D4
+  //  #5/D5 |  PD5 | LCD_D5
+  //  #6/D6 |  PD6 | LCD_D6
+  //  #7/D7 |  PD7 | LCD_D7
+  // Set all pins of port D to outputs as default
+  DDRD  = 0xFF;
+
+  // LCD control lines
+  //   ARD  | Port | LCD
+  // #14/A0 |  PC0 | LCD_CS_NOT
+  // #15/A1 |  PC1 | LCD_RES_NOT
+  // #16/A2 |  PC2 | LCD_NOT_WR
+  // #17/A3 |  PC3 | LCD_A0
+  // #18/A4 |  PC4 | LCD_NOT_RD
+  // Set used pins of port C to output
+  DDRC |= 0x1F;
+  
+  // LCD backlight control
+  //   ARD  | Port | LCD
+  //  #9/D9 |  PB1 | LCD_BL
+  // Set used pin of port B to output
+  DDRB |= 0x02;
+  
+  //Drive the ports to a reasonable starting state.
+  LCD_DATA=0;
+  CLR_CS;
+  SET_RESET;
+  SET_RWR;
+  CLR_A0;
+  SET_E;
+  #endif //PARALLEL_6800
   }
 //============================================================================
 void loop()

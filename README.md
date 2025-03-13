@@ -27,27 +27,29 @@ To set the interface to **8080 Parallel**, make sure that #define PARALLEL_8080 
 ## Connection Details
 #### Connection details for the [CFAG12864Q1](https://www.crystalfontz.com/products/cfag12864q1tfh) 
 
-| CFAG12864Q1 Pin   | Seeeduino Pin SPI | Seeeduino Pin 8080 | Connection Description           |
-|-------------------|-------------------|--------------------|----------------------------------|
-| 1     (CSB)       | D10               | A0                 | Chip Select                      |
-| 2     (RSTB)      | A1                | A1                 | Reset                            |
-| 3     (A0)        | A3                | A3                 | Data/Command                     |
-| 4     (RWR)       | DNC               | A2                 | Read/Write 6800 -or- Write 8080  |
-| 5     (ERD)       | DNC               | A4                 | Enable 6800 -or- Read 8080       |
-| 6-11  (D0-D5)     | D0-D5             | D0-D5              | Data Pins 0-5                    |
-| 12    (D6)        | SCK               | D6                 | Data Pin 6 / SCK                 |
-| 13    (D7)        | MOSI              | D7                 | Data Pin 7 / MOSI                |
-| 14    (VDD)       | 5V                | 5V                 | Power                            |
-| 15    (GND)       | GND               | GND                | Ground                           |
-| 16-20 (NC)        | DNC               | DNC                | See schematic for more details   |
-| 21    (V0)        | DNC               | DNC                | LCD driving voltage - negative   |
-| 22    (XV0)       | DNC               | DNC                | LCD driving voltage - positive   |
-| 23-24 (NC)        | DNC               | DNC                | See schematic for more details   |
-| 25    (VG)        | DNC               | DNC                | LCD driving voltage - segments   |
-| 26-30 (NC)        | DNC               | DNC                | See schematic for more details   |
-| 31    (C86)       | GND               | GND                | Selects 8080 or 6800 in Parallel |
-| 32    (PSB)       | GND               | VDD                | Selects SPI or Parallel          |
-| 33-34 (NC)        | DNC               | DNC                | See schematic for more details   |
+  
+| CFAG12864Q1<br>Pin  | Seeeduino<br>Pin SPI| Seeeduino<br>Pin 8080 | Seeduino<br>Pin 6800 |       Connection<br>Description     |
+|:-------------:|:--------:|:---------:|:--------:|------------------------------------|
+| 1     (CSB)   | D10      | A0        | A0       | Chip Select                        |
+| 2     (RSTB)  | A1       | A1        | A1       | Reset                              |
+| 3     (A0)    | A3       | A3        | A3       | Data/Command                       |
+| 4     (RW/R)  | DNC      | A2        | A2       | 6800 Read/Write H = Read L = Write<br>- or-<br>8080 Write|
+| 5     (E/RD)  | DNC      | (RD) A4   | (E) A4   | Enable 6800<br>-or-<br>Read 8080         |
+| 6-11  (D0-D5) | D0-D5    | D0-D5     | D0-D5    | Data Pins 0-5                      |
+| 12    (D6)    | SCK      | D6        | D6       | Data Pin 6 / SCK                   |
+| 13    (D7)    | MOSI     | D7        | D7       | Data Pin 7 / MOSI                  |
+| 14    (VDD)   | 3.3V     | 3.3V      | 3.3V     | Power                              |
+| 15    (GND)   | GND      | GND       | GND      | Ground                             |
+| 16-20 (NC)    | DNC      | DNC       | DNC      | See schematic for more details     |
+| 21    (V0)    | DNC      | DNC       | DNC      | LCD driving voltage - negative     |
+| 22    (XV0)   | DNC      | DNC       | DNC      | LCD driving voltage - positive     |
+| 23-24 (NC)    | DNC      | DNC       | DNC      | See schematic for more details     |
+| 25    (VG)    | DNC      | DNC       | DNC      | LCD driving voltage - segments     |
+| 26-30 (NC)    | DNC      | DNC       | DNC      | See schematic for more details     |
+| 31    (C86)   | GND      | GND       | VDD      | Selects 8080 or 6800 in Parallel   |
+| 32    (PSB)   | GND      | VDD       | VDD      | Selects SPI or Parallel            |
+| 33-34 (NC)    | DNC      | DNC       | DNC      | See schematic for more details     |
+
 
 The build files including the schematic can be downloaded 
     [on our site.](https://www.crystalfontz.com/products/document/3516/CFA_10072v0p1_BUILD_PACKAGE.zip) \
