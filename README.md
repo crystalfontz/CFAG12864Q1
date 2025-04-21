@@ -28,14 +28,14 @@ To set the interface to **8080 Parallel**, make sure that #define PARALLEL_8080 
 #### Connection details for the [CFAG12864Q1](https://www.crystalfontz.com/products/cfag12864q1tfh) 
 
   
-| CFAG12864Q1<br>Pin  | Seeeduino<br>Pin SPI| Seeeduino<br>Pin 8080 | Seeduino<br>Pin 6800 |       Connection<br>Description     |
+| CFAG12864Q1<br>Pin  | Seeeduino<br>Pin SPI| Seeeduino<br>Pin 8080 | Seeeduino<br>Pin 6800 |       Connection<br>Description     |
 |:-------------:|:--------:|:---------:|:--------:|------------------------------------|
 | 1     (CSB)   | D10      | A0        | A0       | Chip Select                        |
 | 2     (RSTB)  | A1       | A1        | A1       | Reset                              |
 | 3     (A0)    | A3       | A3        | A3       | Data/Command                       |
 | 4     (RW/R)  | DNC      | A2        | A2       | 6800 Read/Write H = Read L = Write<br>- or-<br>8080 Write|
 | 5     (E/RD)  | DNC      | (RD) A4   | (E) A4   | Enable 6800<br>-or-<br>Read 8080         |
-| 6-11  (D0-D5) | D0-D5    | D0-D5     | D0-D5    | Data Pins 0-5                      |
+| 6-11  (D0-D5) | DNC      | D0-D5     | D0-D5    | Data Pins 0-5                      |
 | 12    (D6)    | SCK      | D6        | D6       | Data Pin 6 / SCK                   |
 | 13    (D7)    | MOSI     | D7        | D7       | Data Pin 7 / MOSI                  |
 | 14    (VDD)   | 3.3V     | 3.3V      | 3.3V     | Power                              |
