@@ -1,43 +1,39 @@
 //============================================================================
 //
-// Display is Crystalfontz CFAG12864Q1
+// This code is written to demonstrat the Crystalfontz CFAG12864Q1
 //   https://www.crystalfontz.com/product/cfag12864q1tfh
 //   https://www.crystalfontz.com/product/cfag12864q1tmi
 //
 // The controller is a Sitronix ST7567
 //   https://www.crystalfontz.com/controllers/Sitronix/ST7567/
 //
-// Breakout board is Crystalfontz PCB 10072
-//   
-//| CFAG12864Q1   | Seeeduino| Seeeduino | Seeduino |       Connection                  |
-//|     Pin       |  Pin SPI |  Pin 8080 | Pin 6800 |       Description                 |
-//|---------------|----------|-----------|----------|-----------------------------------|
-//| 1     (CSB)   | D10      | A0        | A0       | Chip Select                       |
-//| 2     (RSTB)  | A1       | A1        | A1       | Reset                             |
-//| 3     (A0)    | A3       | A3        | A3       | Data/Command                      |
-//| 4     (RWR)   | DNC      | (WR) A2   | (RWR) A2 | Read/Write 6800 H = Read L = Write|
-//|               |          |           |          | -or- Write 8080                   |
-//| 5     (ERD)   | DNC      | (RD) A4   | (E) A4   | Enable 6800 -or- Read 8080        |
-//| 6-11  (D0-D5) | D0-D5    | D0-D5     | D0-D5    | Data Pins 0-5                     |
-//| 12    (D6)    | SCK      | D6        | D6       | Data Pin 6 / SCK                  |
-//| 13    (D7)    | MOSI     | D7        | D7       | Data Pin 7 / MOSI                 |
-//| 14    (VDD)   | 3.3V     | 3.3V      | 3.3V     | Power                             |
-//| 15    (GND)   | GND      | GND       | GND      | Ground                            |
-//| 16-20 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
-//| 21    (V0)    | DNC      | DNC       | DNC      | LCD driving voltage - negative    |
-//| 22    (XV0)   | DNC      | DNC       | DNC      | LCD driving voltage - positive    |
-//| 23-24 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
-//| 25    (VG)    | DNC      | DNC       | DNC      | LCD driving voltage - segments    |
-//| 26-30 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
-//| 31    (C86)   | GND      | GND       | VDD      | Selects 8080 or 6800 in Parallel  |
-//| 32    (PSB)   | GND      | VDD       | VDD      | Selects SPI or Parallel           |
-//| 33-34 (NC)    | DNC      | DNC       | DNC      | See schematic for more details    |
+//|---------------|-----------|-----------|-----------|-----------------------------------|
+//|  CFAG12864Q1  | Seeeduino | Seeeduino | Seeeduino | Connection                        |
+//|      Pin      |  Pin SPI  |  Pin 8080 | Pin 6800  | Description                       |
+//|---------------|-----------|-----------|-----------|-----------------------------------|
+//| 1     (CSB)   | D10       | A0        | A0        | Chip Select                       |
+//| 2     (RSTB)  | A1        | A1        | A1        | Reset                             |
+//| 3     (A0)    | A3        | A3        | A3        | Data/Command                      |
+//| 4     (RWR)   | DNC       | (WR) A2   | (RWR) A2  | Read/Write 6800 H = Read L = Write|
+//|               |           |           |           | -or- Write 8080                   |
+//| 5     (ERD)   | DNC       | (RD) A4   | (E) A4    | Enable 6800 -or- Read 8080        |
+//| 6-11  (D0-D5) | D0-D5     | D0-D5     | D0-D5     | Data Pins 0-5                     |
+//| 12    (D6)    | SCK       | D6        | D6        | Data Pin 6 / SCK                  |
+//| 13    (D7)    | MOSI      | D7        | D7        | Data Pin 7 / MOSI                 |
+//| 14    (VDD)   | 3.3V      | 3.3V      | 3.3V      | Power                             |
+//| 15    (GND)   | GND       | GND       | GND       | Ground                            |
+//| 16-20 (NC)    | DNC       | DNC       | DNC       | See schematic for more details    |
+//| 21    (V0)    | DNC       | DNC       | DNC       | LCD driving voltage - negative    |
+//| 22    (XV0)   | DNC       | DNC       | DNC       | LCD driving voltage - positive    |
+//| 23-24 (NC)    | DNC       | DNC       | DNC       | See schematic for more details    |
+//| 25    (VG)    | DNC       | DNC       | DNC       | LCD driving voltage - segments    |
+//| 26-30 (NC)    | DNC       | DNC       | DNC       | See schematic for more details    |
+//| 31    (C86)   | GND       | GND       | VDD       | Selects 8080 or 6800 in Parallel  |
+//| 32    (PSB)   | GND       | VDD       | VDD       | Selects SPI or Parallel           |
+//| 33-34 (NC)    | DNC       | DNC       | DNC       | See schematic for more details    |
 //
 //============================================================================
 #include <avr/io.h>
-// C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.cpp
-// C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.h
-#include <SPI.h>
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 // This is supposed to be set somewhere in the AVR Studio, but I can't find
@@ -53,21 +49,23 @@
 //#define PARALLEL_6800
 
 #ifndef SPI_4W
- #ifndef PARALLEL_8080
-  #ifndef PARALLEL_6800
-   #error "You must define an interface"
+  #ifndef PARALLEL_8080
+    #ifndef PARALLEL_6800
+      #error "You must define an interface"
+    #endif
   #endif
- #endif
 #endif
 
-#if defined(SPI_4W) & defined(PARALLEL_8080) & defined(PARALLEL_6800) || defined(SPI_4W) & defined(PARALLEL_8080) || defined(SPI_4W) & defined(PARALLEL_6800) || defined(PARALLEL_8080) & defined(PARALLEL_6800)
- #error "You can only define one interface"
+// Confirm only a single interface is defined
+#if defined(SPI_4W) & defined(PARALLEL_8080) || defined(SPI_4W) & defined(PARALLEL_6800) || defined(PARALLEL_8080) & defined(PARALLEL_6800)
+  #error "You can only define one interface"
 #endif
-// 
-// 
-// 
 //============================================================================
-#ifdef SPI_4W
+#if defined(SPI_4W)
+#include <SPI.h>
+// C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.cpp
+// C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.h
+
 // LCD SPI & backlight control lines
 //   ARD   | Port | LCD
 // #10/D10 |  PB2 | LCD_CS_NOT
@@ -88,9 +86,7 @@
 #define SET_RESET (PORTC |=  (0x02))
 #define CLR_A0    (PORTC &= ~(0x08))
 #define SET_A0    (PORTC |=  (0x08))
-#endif //SPI_4W
-
-#ifdef PARALLEL_8080
+#elif defined(PARALLEL_8080)
 // LCD Data is connected to port D
 //   ARD  | Port | LCD
 //  #0/D0 |  PD0 | LCD_D0
@@ -102,7 +98,7 @@
 //  #6/D6 |  PD6 | LCD_D6
 //  #7/D7 |  PD7 | LCD_D7
 //
-#define LCD_DATA    (PORTD)
+#define LCD_DATA  (PORTD)
 //
 // LCD control lines
 //   ARD  | Port | LCD
@@ -129,9 +125,7 @@
 //
 #define CLR_BL    (PORTB &= ~(0x02))
 #define SET_BL    (PORTB |=  (0x02))
-#endif //PARALLEL_8080
-
-#ifdef PARALLEL_6800
+#elif defined(PARALLEL_6800)
 // LCD Data is connected to port D
 //   ARD  | Port | LCD
 //  #0/D0 |  PD0 | LCD_D0
@@ -157,12 +151,12 @@
 #define SET_CS    (PORTC |=  (0x01))
 #define CLR_RESET (PORTC &= ~(0x02))
 #define SET_RESET (PORTC |=  (0x02))
-#define CLR_RWR    (PORTC &= ~(0x04))
-#define SET_RWR    (PORTC |=  (0x04))
+#define CLR_RWR   (PORTC &= ~(0x04))
+#define SET_RWR   (PORTC |=  (0x04))
 #define CLR_A0    (PORTC &= ~(0x08))
 #define SET_A0    (PORTC |=  (0x08))
-//#define CLR_E    (PORTC &= ~(0x10))
-#define SET_E    (PORTC |=  (0x10))
+#define CLR_E     (PORTC &= ~(0x10))
+#define SET_E     (PORTC |=  (0x10))
 //
 // LCD backlight control
 //   ARD  | Port | LCD
@@ -170,8 +164,6 @@
 //
 #define CLR_BL    (PORTB &= ~(0x02))
 #define SET_BL    (PORTB |=  (0x02))
-
-
 #endif
 
 //
@@ -287,28 +279,53 @@ const char cfao12864d3_logo[8][128] PROGMEM =
 
 //============================================================================
 
-#ifdef SPI_4W
+#if defined(SPI_4W)
 void lcd_cmd_send(uint8_t data)
-  {
+{
   // Select the LCD's command register (~125nS setup)
   CLR_A0;
   //  send in the address and value via SPI:
   SPI.transfer(data);
-  }
+}
 //----------------------------------------------------------------------------
 void lcd_data_send(uint8_t data)
-  {
+{
   // Select the LCD's data register (~125nS setup)
   SET_A0;
   //  send in the address and value via SPI:
   SPI.transfer(data);
-  }
-#endif //SPI_4W
-
-
-#ifdef PARALLEL_8080
-void lcd_cmd_send(uint8_t data)
+}
+//----------------------------------------------------------------------------
+/// This function is used to send an entire image
+void lcd_image_send(const char image[8][128])
+{
+  //This "inline" version takes about 2.8mS to fill the screen from the image in
+  //flash, using 8MHz SPI transfers.
+  //
+  //The SPI clock is active less than half of the time, so if the SPI library were
+  //to allow a "start sending SPI using hardware while we can continue in the
+  //foreground" approach, there is probably another large gain available.
+  for(uint8_t page = 0; page < 8; page++)
   {
+    // Point the controller to the correct page. This is the Y coordinate,
+    // addressed by 8 pixel / 1 byte horizontal bands.
+    lcd_page_address_set(page);
+    //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
+    //not really needed, but it is still good practice.
+    lcd_column_address_set(0);
+    //Dump the data out for this line.
+    // Select the LCD's data register
+    SET_A0;
+    for(uint8_t col = 0; col < 128; col++)
+    {
+      //  send in the address and value via SPI:
+      SPI.transfer(pgm_read_byte(&image[page][col]));
+    }
+  }
+}
+#elif defined(PARALLEL_8080)
+void lcd_cmd_send(uint8_t data)
+{
   // Press the data onto the port (~250nS setup)
   LCD_DATA = data;
   // Select the LCD's command register (~125nS setup)
@@ -316,10 +333,10 @@ void lcd_cmd_send(uint8_t data)
   // Make a low pulse on WR to clock the data (~125nS pulse width)
   CLR_WR;
   SET_WR;
-  }
+}
 //----------------------------------------------------------------------------
 void lcd_data_send(uint8_t data)
-  {
+{
   // Press the data onto the port (~250nS setup)
   LCD_DATA = data;
   // Select the LCD's data register (~125nS setup)
@@ -327,12 +344,33 @@ void lcd_data_send(uint8_t data)
   // Make a low pulse on WR to clock the data (~125nS pulse width)
   CLR_WR;
   SET_WR;
-  }
-#endif //PARALLEL_8080
+}
+//----------------------------------------------------------------------------
+/// This function is used to send an entire image
+void lcd_image_send(const char image[8][128])
+{
+  uint8_t page;
+  uint8_t col;
 
-#ifdef PARALLEL_6800
-void lcd_cmd_send(uint8_t data)
+  for (page = 0; page < 8; page++) // 8?
   {
+    lcd_page_address_set(page);
+    lcd_column_address_set(0);
+    // Select the LCD's data register (~125nS setup)
+    SET_A0;
+    for (col = 0; col < 128; col++)
+    {
+      // Press the data onto the port (~250nS setup)
+      LCD_DATA = pgm_read_byte(&image[page][col]);
+      // Make a low pulse on RWR to clock the data (~125nS pulse width)
+      CLR_WR;
+      SET_WR;
+    }
+  }
+}
+#elif defined(PARALLEL_6800)
+void lcd_cmd_send(uint8_t data)
+{
   // Press the data onto the port (~250nS setup)
   LCD_DATA = data;
   // Select the LCD's command register (~125nS setup)
@@ -340,10 +378,11 @@ void lcd_cmd_send(uint8_t data)
   // Make a low pulse on RWR to clock the data (~125nS pulse width)
   CLR_RWR;
   SET_RWR;
-  }
+}
 //----------------------------------------------------------------------------
+/// This function is used to send a single data byte
 void lcd_data_send(uint8_t data)
-  {
+{
   // Press the data onto the port (~250nS setup)
   LCD_DATA = data;
   // Select the LCD's data register (~125nS setup)
@@ -351,53 +390,74 @@ void lcd_data_send(uint8_t data)
   // Make a low pulse on RWR to clock the data (~125nS pulse width)
   CLR_RWR;
   SET_RWR;
+}
+//----------------------------------------------------------------------------
+/// This function is used to send an entire image
+void lcd_image_send(const char image[8][128])
+{
+  uint8_t page;
+  uint8_t col;
+
+  for (page = 0; page < 8; page++) // 8?
+  {
+    lcd_page_address_set(page);
+    lcd_column_address_set(0);
+    // Select the LCD's data register (~125nS setup)
+    SET_A0;
+    for (col = 0; col < 128; col++)
+    {
+      // Press the data onto the port (~250nS setup)
+      LCD_DATA = pgm_read_byte(&image[page][col]);
+      // Make a low pulse on RWR to clock the data (~125nS pulse width)
+      CLR_RWR;
+      SET_RWR;
+    }
   }
-#endif //PARALLEL_6800
-
-
+}
+#endif //interface select
 //----------------------------------------------------------------------------
 void lcd_page_address_set(uint8_t page)
-  {
+{
   lcd_cmd_send(0b10110000 | (page & 0b1111));
-  }
+}
 //----------------------------------------------------------------------------
 void lcd_column_address_set(uint8_t column)
-  {
+{
   lcd_cmd_send(0b00010000 | (column >> 4));
   lcd_cmd_send(0b00000000 | (column & 0b1111));
-  }
+}
 //----------------------------------------------------------------------------
 // Sets the contrast, 0 = light, 63 = dark, 31 = about right.
 void lcd_set_contrast(uint8_t contrast)
-  {
+{
   // The Electronic Volume (Double Byte Command)
   // This is the command to set the contrast.
   // The range that this command can control is determined
   // by the resistor ratio command immediately above.
   lcd_cmd_send(0x81);  //The Electronic Volume Mode Set
   lcd_cmd_send(contrast & 0x3F);    //Electronic Volume Register Set
-  }
+}
 //----------------------------------------------------------------------------
+/// This function is used to fill the screen with a single value e.g. all on/ all off
 void lcd_fill(uint8_t pattern)
-  {
-  uint8_t
-    page;
-  uint8_t
-     col;
+{
+  uint8_t page;
+  uint8_t col;
 
-  for (page = 0; page < 9; ++page)
-    {
+  for (page = 0; page < 8; ++page)
+  {
     lcd_page_address_set(page);
     lcd_column_address_set(0);
+    // Select the LCD's data register (~125nS setup)
     for (col = 0; col < 128; ++col)
-      {
+    {
       lcd_data_send(pattern);
-      }
     }
   }
+}
 //----------------------------------------------------------------------------
 void lcd_init()
-  {
+{
   //For this demonstration, the display can just be selected forever.
   //If your hardware shares the data bus (nothing wrong with that) then
   //you will want to manage the CS line.
@@ -473,11 +533,11 @@ void lcd_init()
   // This command must match the hardware. Our demo board
   // depends on Boost, regulator and follower all enabled.  
   lcd_cmd_send(0x2F);
-  }
+}
 //============================================================================
 void setup()
-  {
-#ifdef SPI_4W
+{
+#if defined(SPI_4W)
   //Set the port directions
   // LCD SPI & backlight control lines
   //   ARD   | Port | LCD
@@ -500,14 +560,11 @@ void setup()
   SET_RESET;
   CLR_A0;
   
-  
   // initialize SPI. By default the clock is 4MHz. The chip is good to 10 MHz
   SPI.begin();  
   //Bump the clock to 8MHz. Appears to be the maximum.
   SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
-#endif //SPI_4W
-
-#ifdef PARALLEL_8080
+#elif defined(PARALLEL_8080)
   //Set the port directions
   // LCD Data is connected to port D
   //   ARD  | Port | LCD
@@ -545,9 +602,7 @@ void setup()
   SET_WR;
   CLR_A0;
   SET_RD;
-  #endif //PARALLEL_8080
-
-  #ifdef PARALLEL_6800
+#elif defined(PARALLEL_6800)
   //Set the port directions
   // LCD Data is connected to port D
   //   ARD  | Port | LCD
@@ -585,160 +640,105 @@ void setup()
   SET_RWR;
   CLR_A0;
   SET_E;
-  #endif //PARALLEL_6800
-  }
-//============================================================================
-void loop()
-  {
-  uint8_t
-    i;
-  uint8_t
-    j;
+#endif //interface dependent initialization
 
   //Turn the backlight on
   SET_BL;
 
-  //Initialize tle LCD controller
+  //Initialize the LCD controller
   lcd_init();
     
-#if(0)
+}
+//============================================================================
+void loop()
+{
+  //Clear Screen
+  lcd_fill(0x00);    
+  _delay_ms(1000);
+
+  //Fill Screen
+  lcd_fill(0xFF);    
+  _delay_ms(1500);
+
+  //Odd horizontal lines
+  lcd_fill(0xAA);
+  _delay_ms(1500);
+
+  //Even horizontal lines
+  lcd_fill(0x55);
+  _delay_ms(1500);
+
+  //Logo
   //Send the image from the flash to the LCD.
-  //This "inline" version takes about 2.8mS to fill the screen from the image in
-  //flash, using 8MHz SPI transfers.
-  //
-  //The SPI clock is active less than half of the time, so if the SPI library were
-  //to allow a "start sending SPI using hardware while we can continue in the
-  //foreground" approach, there is probably another large gain available.
-  for(j=0;j<8;j++)
-    {
+  lcd_send_image(cfao12864d3_logo);
+  _delay_ms(2500);
+
+  //Odd vertical lines
+  for(uint8_t page = 0; page < 8; page++)
+  {
     // Point the controller to the correct page. This is the Y coordinate,
     // addressed by 8 pixel / 1 byte horizontal bands.
-    lcd_page_address_set(j);
+    lcd_page_address_set(page);
     //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
     //not really needed, but it is still good practice.
     lcd_column_address_set(0);
     //Dump the data out for this line.
-    // Select the LCD's data register
-    SET_A0;
-    for(i=0;i<128;i++)
-      {
-      //  send in the address and value via SPI:
-      SPI.transfer(pgm_read_byte(&cfao12864d3_logo[j][i]));
-      }
-    }
-
-#endif
-
-  while(1)
+    for(uint8_t col = 0; col < 128; col++)
     {
-    //Logo
-    //Send the image from the flash to the LCD.
-    //This "normal" version takes about 3.1mS to fill the screen from the image in
-    //flash, using 8MHz SPI transfers.
-    for(j=0;j<8;j++)
-      {
-      // Point the controller to the correct page. This is the Y coordinate,
-      // addressed by 8 pixel / 1 byte horizontal bands.
-      lcd_page_address_set(j);
-      //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
-      //not really needed, but it is still good practice.
-      lcd_column_address_set(0);
-      //Dump the data out for this line.
-      for(i=0;i<128;i++)
-        {
-        lcd_data_send(pgm_read_byte(&cfao12864d3_logo[j][i]));
-        }
-      }
-    _delay_ms(2500);
-
-    //Clear
-    lcd_fill(0x00);    
-    _delay_ms(1000);
-    
-    //Filled
-    lcd_fill(0xFF);    
-    _delay_ms(1500);
-    
-    //Odd horizontal lines
-    lcd_fill(0xAA);
-    _delay_ms(1500);
-    
-    //Even horizontal lines
-    lcd_fill(0x55);
-    _delay_ms(1500);
-    
-    //Odd vertical lines
-    for(j=0;j<8;j++)
-      {
-      // Point the controller to the correct page. This is the Y coordinate,
-      // addressed by 8 pixel / 1 byte horizontal bands.
-      lcd_page_address_set(j);
-      //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
-      //not really needed, but it is still good practice.
-      lcd_column_address_set(0);
-      //Dump the data out for this line.
-      for(i=0;i<128;i++)
-        {
-        lcd_data_send(i&0x01?0xFF:0x00);
-        }
-      }
-    _delay_ms(1500);
-    
-    //Even vertical lines
-    for(j=0;j<8;j++)
-      {
-      // Point the controller to the correct page. This is the Y coordinate,
-      // addressed by 8 pixel / 1 byte horizontal bands.
-      lcd_page_address_set(j);
-      //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
-      //not really needed, but it is still good practice.
-      lcd_column_address_set(0);
-      //Dump the data out for this line.
-      for(i=0;i<128;i++)
-        {
-        lcd_data_send(i&0x01?0x00:0xFF);
-        }
-      }
-    _delay_ms(1500);
-    
-    //Odd check
-    for(j=0;j<8;j++)
-      {
-      // Point the controller to the correct page. This is the Y coordinate,
-      // addressed by 8 pixel / 1 byte horizontal bands.
-      lcd_page_address_set(j);
-      //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
-      //not really needed, but it is still good practice.
-      lcd_column_address_set(0);
-      //Dump the data out for this line.
-      for(i=0;i<128;i++)
-        {
-        lcd_data_send(i&0x01?0xAA:0x55);
-        }
-      }
-    _delay_ms(1500);
-    
-    //Even check
-    for(j=0;j<8;j++)
-      {
-      // Point the controller to the correct page. This is the Y coordinate,
-      // addressed by 8 pixel / 1 byte horizontal bands.
-      lcd_page_address_set(j);
-      //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
-      //not really needed, but it is still good practice.
-      lcd_column_address_set(0);
-      //Dump the data out for this line.
-      for(i=0;i<128;i++)
-        {
-        lcd_data_send(i&0x01?0x55:0xAA);
-        }
-      }
-    _delay_ms(1500);
+      lcd_data_send(col&0x01?0xFF:0x00);
     }
-
-
-  //Wait here forever.
-  while(1);
-  } // void loop()
+  }
+  _delay_ms(1500);
+    
+  //Even vertical lines
+  for(uint8_t page = 0; page < 8; page++)
+  {
+    // Point the controller to the correct page. This is the Y coordinate,
+    // addressed by 8 pixel / 1 byte horizontal bands.
+    lcd_page_address_set(page);
+    //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
+    //not really needed, but it is still good practice.
+    lcd_column_address_set(0);
+    //Dump the data out for this line.
+    for(uint8_t col = 0; col < 128; col++)
+    {
+      lcd_data_send(col&0x01?0x00:0xFF);
+    }
+  }
+  _delay_ms(1500);
+    
+  //Odd check
+  for(uint8_t page = 0; page < 8; page++)
+  {
+    // Point the controller to the correct page. This is the Y coordinate,
+    // addressed by 8 pixel / 1 byte horizontal bands.
+    lcd_page_address_set(page);
+    //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
+    //not really needed, but it is still good practice.
+    lcd_column_address_set(0);
+    //Dump the data out for this line.
+    for(uint8_t col = 0; col < 128; col++)
+    {
+      lcd_data_send(col&0x01?0xAA:0x55);
+    }
+  }
+  _delay_ms(1500);
+  
+  //Even check
+  for(uint8_t page = 0; page < 8; page++)
+  {
+    // Point the controller to the correct page. This is the Y coordinate,
+    // addressed by 8 pixel / 1 byte horizontal bands.
+    lcd_page_address_set(page);
+    //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
+    //not really needed, but it is still good practice.
+    lcd_column_address_set(0);
+    //Dump the data out for this line.
+    for(uint8_t col = 0; col < 128; col++)
+    {
+      lcd_data_send(col&0x01?0x55:0xAA);
+    }
+  }
+  _delay_ms(1500);
+} // void loop()
 //============================================================================
-
