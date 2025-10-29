@@ -1,6 +1,6 @@
 # CFAG12864Q1-TFH and CFAG12864Q1-TMI Demo Code
 
-This example Seeeduino (Arduino clone) code is for the Crystalfontz "Q" family of 128x64 graphical displays. These displays are transflective which means they can be read in sunlight with no backlight necessary as well as in dark environments with the backlight on.
+This example Seeeduino (Arduino clone) code is for the Crystalfontz "Q" family of 128x64 graphical displays. 
 
 For more information on our full list of graphical displays, please click [here](https://www.crystalfontz.com/c/graphic-lcd-displays/17).
 For more information on our full list of sunlight readable displays, please click [here](https://www.crystalfontz.com/c/sunlight-readable-displays/38).
@@ -25,7 +25,7 @@ To set the interface to **4-Wire SPI**, make sure that #define SPI_4W is not com
 To set the interface to **8080 Parallel**, make sure that #define PARALLEL_8080 is not commented out
 
 ## Connection Details
-#### Connection details for the [CFAG12864Q1](https://www.crystalfontz.com/products/cfag12864q1tfh) 
+#### Connection details for the [CFAG12864Q1](https://www.crystalfontz.com/product/cfag12864q1tfh) 
 
   
 | CFAG12864Q1<br>Pin  | Seeeduino<br>Pin SPI| Seeeduino<br>Pin 8080 | Seeeduino<br>Pin 6800 |       Connection<br>Description     |

@@ -1,6 +1,6 @@
 //============================================================================
 //
-// This code is written to demonstrat the Crystalfontz CFAG12864Q1
+// This code is written to demonstrate the Crystalfontz CFAG12864Q1
 //   https://www.crystalfontz.com/product/cfag12864q1tfh
 //   https://www.crystalfontz.com/product/cfag12864q1tmi
 //
@@ -62,108 +62,112 @@
 #endif
 //============================================================================
 #if defined(SPI_4W)
-#include <SPI.h>
-// C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.cpp
-// C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.h
+  #include <SPI.h>
+  // C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.cpp
+  // C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SPI\SPI.h
 
-// LCD SPI & backlight control lines
-//   ARD   | Port | LCD
-// #10/D10 |  PB2 | LCD_CS_NOT
-// #11/D11 |  PB3 | LCD_MOSI (hardware SPI)
-// #12/D12 |  PB4 | LCD_BL
-// #13/D13 |  PB6 | LCD_SCK (hardware SPI)
-#define CLR_CS    (PORTB &= ~(0x04))
-#define SET_CS    (PORTB |=  (0x04))
-#define CLR_BL    (PORTB &= ~(0x10))
-#define SET_BL    (PORTB |=  (0x10))
-//
-// LCD control lines
-//   ARD  | Port | LCD
-// #15/A1 |  PC1 | LCD_RES_NOT
-// #17/A3 |  PC3 | LCD_A0
-//
-#define CLR_RESET (PORTC &= ~(0x02))
-#define SET_RESET (PORTC |=  (0x02))
-#define CLR_A0    (PORTC &= ~(0x08))
-#define SET_A0    (PORTC |=  (0x08))
+  // LCD SPI & backlight control lines
+  //   ARD   | Port | LCD
+  // #10/D10 |  PB2 | LCD_CS_NOT
+  // #11/D11 |  PB3 | LCD_MOSI (hardware SPI)
+  // #12/D12 |  PB4 | LCD_BL
+  // #13/D13 |  PB6 | LCD_SCK (hardware SPI)
+  #define CLR_CS    (PORTB &= ~(0x04))
+  #define SET_CS    (PORTB |=  (0x04))
+  #define CLR_BL    (PORTB &= ~(0x10))
+  #define SET_BL    (PORTB |=  (0x10))
+  //
+  // LCD control lines
+  //   ARD  | Port | LCD
+  // #15/A1 |  PC1 | LCD_RES_NOT
+  // #17/A3 |  PC3 | LCD_A0
+  //
+  #define CLR_RESET (PORTC &= ~(0x02))
+  #define SET_RESET (PORTC |=  (0x02))
+  #define CLR_A0    (PORTC &= ~(0x08))
+  #define SET_A0    (PORTC |=  (0x08))
+
+
 #elif defined(PARALLEL_8080)
-// LCD Data is connected to port D
-//   ARD  | Port | LCD
-//  #0/D0 |  PD0 | LCD_D0
-//  #1/D1 |  PD1 | LCD_D1 
-//  #2/D2 |  PD2 | LCD_D2
-//  #3/D3 |  PD3 | LCD_D3
-//  #4/D4 |  PD4 | LCD_D4
-//  #5/D5 |  PD5 | LCD_D5
-//  #6/D6 |  PD6 | LCD_D6
-//  #7/D7 |  PD7 | LCD_D7
-//
-#define LCD_DATA  (PORTD)
-//
-// LCD control lines
-//   ARD  | Port | LCD
-// #14/A0 |  PC0 | LCD_CS_NOT
-// #15/A1 |  PC1 | LCD_RES_NOT
-// #16/A2 |  PC2 | LCD_NOT_WR
-// #17/A3 |  PC3 | LCD_A0
-// #18/A4 |  PC4 | LCD_NOT_RD
-//
-#define CLR_CS    (PORTC &= ~(0x01))
-#define SET_CS    (PORTC |=  (0x01))
-#define CLR_RESET (PORTC &= ~(0x02))
-#define SET_RESET (PORTC |=  (0x02))
-#define CLR_WR    (PORTC &= ~(0x04))
-#define SET_WR    (PORTC |=  (0x04))
-#define CLR_A0    (PORTC &= ~(0x08))
-#define SET_A0    (PORTC |=  (0x08))
-#define CLR_RD    (PORTC &= ~(0x10))
-#define SET_RD    (PORTC |=  (0x10))
-//
-// LCD backlight control
-//   ARD  | Port | LCD
-//  #9/D9 |  PB1 | LCD_BL
-//
-#define CLR_BL    (PORTB &= ~(0x02))
-#define SET_BL    (PORTB |=  (0x02))
+  // LCD Data is connected to port D
+  //   ARD  | Port | LCD
+  //  #0/D0 |  PD0 | LCD_D0
+  //  #1/D1 |  PD1 | LCD_D1 
+  //  #2/D2 |  PD2 | LCD_D2
+  //  #3/D3 |  PD3 | LCD_D3
+  //  #4/D4 |  PD4 | LCD_D4
+  //  #5/D5 |  PD5 | LCD_D5
+  //  #6/D6 |  PD6 | LCD_D6
+  //  #7/D7 |  PD7 | LCD_D7
+  //
+  #define LCD_DATA  (PORTD)
+  //
+  // LCD control lines
+  //   ARD  | Port | LCD
+  // #14/A0 |  PC0 | LCD_CS_NOT
+  // #15/A1 |  PC1 | LCD_RES_NOT
+  // #16/A2 |  PC2 | LCD_NOT_WR
+  // #17/A3 |  PC3 | LCD_A0
+  // #18/A4 |  PC4 | LCD_NOT_RD
+  //
+  #define CLR_CS    (PORTC &= ~(0x01))
+  #define SET_CS    (PORTC |=  (0x01))
+  #define CLR_RESET (PORTC &= ~(0x02))
+  #define SET_RESET (PORTC |=  (0x02))
+  #define CLR_WR    (PORTC &= ~(0x04))
+  #define SET_WR    (PORTC |=  (0x04))
+  #define CLR_A0    (PORTC &= ~(0x08))
+  #define SET_A0    (PORTC |=  (0x08))
+  #define CLR_RD    (PORTC &= ~(0x10))
+  #define SET_RD    (PORTC |=  (0x10))
+  //
+  // LCD backlight control
+  //   ARD  | Port | LCD
+  //  #9/D9 |  PB1 | LCD_BL
+  //
+  #define CLR_BL    (PORTB &= ~(0x02))
+  #define SET_BL    (PORTB |=  (0x02))
+
+
 #elif defined(PARALLEL_6800)
-// LCD Data is connected to port D
-//   ARD  | Port | LCD
-//  #0/D0 |  PD0 | LCD_D0
-//  #1/D1 |  PD1 | LCD_D1 
-//  #2/D2 |  PD2 | LCD_D2
-//  #3/D3 |  PD3 | LCD_D3
-//  #4/D4 |  PD4 | LCD_D4
-//  #5/D5 |  PD5 | LCD_D5
-//  #6/D6 |  PD6 | LCD_D6
-//  #7/D7 |  PD7 | LCD_D7
-//
-#define LCD_DATA    (PORTD)
-//
-// LCD control lines
-//   ARD  | Port | LCD
-// #14/A0 |  PC0 | LCD_CS_NOT
-// #15/A1 |  PC1 | LCD_RES_NOT
-// #16/A2 |  PC2 | LCD_NOT_WR
-// #17/A3 |  PC3 | LCD_A0
-// #18/A4 |  PC4 | LCD_NOT_RD
-//
-#define CLR_CS    (PORTC &= ~(0x01))
-#define SET_CS    (PORTC |=  (0x01))
-#define CLR_RESET (PORTC &= ~(0x02))
-#define SET_RESET (PORTC |=  (0x02))
-#define CLR_RWR   (PORTC &= ~(0x04))
-#define SET_RWR   (PORTC |=  (0x04))
-#define CLR_A0    (PORTC &= ~(0x08))
-#define SET_A0    (PORTC |=  (0x08))
-#define CLR_E     (PORTC &= ~(0x10))
-#define SET_E     (PORTC |=  (0x10))
-//
-// LCD backlight control
-//   ARD  | Port | LCD
-//  #9/D9 |  PB1 | LCD_BL
-//
-#define CLR_BL    (PORTB &= ~(0x02))
-#define SET_BL    (PORTB |=  (0x02))
+  // LCD Data is connected to port D
+  //   ARD  | Port | LCD
+  //  #0/D0 |  PD0 | LCD_D0
+  //  #1/D1 |  PD1 | LCD_D1 
+  //  #2/D2 |  PD2 | LCD_D2
+  //  #3/D3 |  PD3 | LCD_D3
+  //  #4/D4 |  PD4 | LCD_D4
+  //  #5/D5 |  PD5 | LCD_D5
+  //  #6/D6 |  PD6 | LCD_D6
+  //  #7/D7 |  PD7 | LCD_D7
+  //
+  #define LCD_DATA    (PORTD)
+  //
+  // LCD control lines
+  //   ARD  | Port | LCD
+  // #14/A0 |  PC0 | LCD_CS_NOT
+  // #15/A1 |  PC1 | LCD_RES_NOT
+  // #16/A2 |  PC2 | LCD_NOT_WR
+  // #17/A3 |  PC3 | LCD_A0
+  // #18/A4 |  PC4 | LCD_NOT_RD
+  //
+  #define CLR_CS    (PORTC &= ~(0x01))
+  #define SET_CS    (PORTC |=  (0x01))
+  #define CLR_RESET (PORTC &= ~(0x02))
+  #define SET_RESET (PORTC |=  (0x02))
+  #define CLR_RWR   (PORTC &= ~(0x04))
+  #define SET_RWR   (PORTC |=  (0x04))
+  #define CLR_A0    (PORTC &= ~(0x08))
+  #define SET_A0    (PORTC |=  (0x08))
+  #define CLR_E     (PORTC &= ~(0x10))
+  #define SET_E     (PORTC |=  (0x10))
+  //
+  // LCD backlight control
+  //   ARD  | Port | LCD
+  //  #9/D9 |  PB1 | LCD_BL
+  //
+  #define CLR_BL    (PORTB &= ~(0x02))
+  #define SET_BL    (PORTB |=  (0x02))
 #endif
 
 //
@@ -172,7 +176,7 @@
 // Image2Code may be helpful to create your own screen image:
 //    https://forum.crystalfontz.com/showthread.php/5854
 //    http://sourceforge.net/p/image2code/code/HEAD/tree/
-const char cfao12864d3_logo[8][128] PROGMEM = 
+const char cfag12864q1_logo[8][128] PROGMEM = 
 {
   {
   0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
@@ -280,140 +284,197 @@ const char cfao12864d3_logo[8][128] PROGMEM =
 //============================================================================
 
 #if defined(SPI_4W)
-void lcd_cmd_send(uint8_t data)
-{
-  // Select the LCD's command register (~125nS setup)
-  CLR_A0;
-  //  send in the address and value via SPI:
-  SPI.transfer(data);
-}
-//----------------------------------------------------------------------------
-void lcd_data_send(uint8_t data)
-{
-  // Select the LCD's data register (~125nS setup)
-  SET_A0;
-  //  send in the address and value via SPI:
-  SPI.transfer(data);
-}
-//----------------------------------------------------------------------------
-/// This function is used to send an entire image
-void lcd_image_send(const char image[8][128])
-{
-  //This "inline" version takes about 2.8mS to fill the screen from the image in
-  //flash, using 8MHz SPI transfers.
-  //
-  //The SPI clock is active less than half of the time, so if the SPI library were
-  //to allow a "start sending SPI using hardware while we can continue in the
-  //foreground" approach, there is probably another large gain available.
-  for(uint8_t page = 0; page < 8; page++)
+  void lcd_cmd_send(uint8_t data)
   {
-    // Point the controller to the correct page. This is the Y coordinate,
-    // addressed by 8 pixel / 1 byte horizontal bands.
-    lcd_page_address_set(page);
-    //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
-    //not really needed, but it is still good practice.
-    lcd_column_address_set(0);
-    //Dump the data out for this line.
-    // Select the LCD's data register
+    // Select the LCD's command register (~125nS setup)
+    CLR_A0;
+    //  send in the address and value via SPI:
+    SPI.transfer(data);
+  }
+  //----------------------------------------------------------------------------
+  void lcd_data_send(uint8_t data)
+  {
+    // Select the LCD's data register (~125nS setup)
     SET_A0;
-    for(uint8_t col = 0; col < 128; col++)
+    //  send in the address and value via SPI:
+    SPI.transfer(data);
+  }
+  //----------------------------------------------------------------------------
+  /// This function is used to send an entire image
+  void lcd_image_send(const char image[8][128])
+  {
+    //This "inline" version takes about 2.8mS to fill the screen from the image in
+    //flash, using 8MHz SPI transfers.
+    //
+    //The SPI clock is active less than half of the time, so if the SPI library were
+    //to allow a "start sending SPI using hardware while we can continue in the
+    //foreground" approach, there is probably another large gain available.
+    for(uint8_t page = 0; page < 8; page++)
     {
-      //  send in the address and value via SPI:
-      SPI.transfer(pgm_read_byte(&image[page][col]));
+      // Point the controller to the correct page. This is the Y coordinate,
+      // addressed by 8 pixel / 1 byte horizontal bands.
+      lcd_page_address_set(page);
+      //Reset the X coordinate to 0. Since the memory is 128 wide, this is 
+      //not really needed, but it is still good practice.
+      lcd_column_address_set(0);
+      //Dump the data out for this line.
+      // Select the LCD's data register
+      SET_A0;
+      for(uint8_t col = 0; col < 128; col++)
+      {
+        //  send in the address and value via SPI:
+        SPI.transfer(pgm_read_byte(&image[page][col]));
+      }
     }
   }
-}
+
 #elif defined(PARALLEL_8080)
-void lcd_cmd_send(uint8_t data)
-{
-  // Press the data onto the port (~250nS setup)
-  LCD_DATA = data;
-  // Select the LCD's command register (~125nS setup)
-  CLR_A0;
-  // Make a low pulse on WR to clock the data (~125nS pulse width)
-  CLR_WR;
-  SET_WR;
-}
-//----------------------------------------------------------------------------
-void lcd_data_send(uint8_t data)
-{
-  // Press the data onto the port (~250nS setup)
-  LCD_DATA = data;
-  // Select the LCD's data register (~125nS setup)
-  SET_A0;
-  // Make a low pulse on WR to clock the data (~125nS pulse width)
-  CLR_WR;
-  SET_WR;
-}
-//----------------------------------------------------------------------------
-/// This function is used to send an entire image
-void lcd_image_send(const char image[8][128])
-{
-  uint8_t page;
-  uint8_t col;
-
-  for (page = 0; page < 8; page++) // 8?
+  void lcd_cmd_send(uint8_t data)
   {
-    lcd_page_address_set(page);
-    lcd_column_address_set(0);
+    // Press the data onto the port (~250nS setup)
+    LCD_DATA = data;
+    // Select the LCD's command register (~125nS setup)
+    CLR_A0;
+    // Make a low pulse on WR to clock the data (~125nS pulse width)
+    CLR_WR;
+    SET_WR;
+  }
+  uint8_t statuses[8] = {0,0,0,0,0,0,0,0};
+
+  uint8_t read_status(uint8_t location)
+  {
+    // This command reads the IC status per the ST7567 datasheet
+    // The serial monitor will show garbage during display updates as it shares pins with parallel communication
+    // Use this in conjunction with print_statuses
+    
+    CLR_A0;
+    CLR_CS;
+    //set the databus to inputs
+    DDRD = 0x00; 
+
+
+    CLR_RD;
+    delay(10);
+    // copy the state of the databus into the specified location in statuses[8]
+    statuses[location] = PIND;
+    SET_RD;
+
+    //set the databus to outputs
+    DDRD = 0xFF; 
+
+
+    return(statuses);
+  }
+//----------------------------------------------------------------------------
+  void print_statuses(uint8_t statuses[8])
+  {
+    // Use read_status to find the IC status where deisred
+    // Use this function to print those statuses
+    // The serial monitor will show garbage during display updates as it shares pins with parallel communication
+    Serial.begin(115200);
+    Serial.println();
+    Serial.println("The statuses were: ");
+    Serial.print(statuses[0], HEX);
+    Serial.print("\t");
+    Serial.print(statuses[1], HEX);
+    Serial.print("\t");
+    Serial.print(statuses[2], HEX);  
+    Serial.print("\t");
+    Serial.print(statuses[3], HEX);
+    Serial.print("\t");
+    Serial.print(statuses[4], HEX);
+    Serial.print("\t");
+    Serial.print(statuses[5], HEX);  
+    Serial.print("\t");
+    Serial.print(statuses[6], HEX);
+    Serial.print("\t");
+    Serial.println(statuses[7], HEX);  
+    Serial.end();
+    delay(20);
+  }
+  //----------------------------------------------------------------------------
+  void lcd_data_send(uint8_t data)
+  {
+    // Press the data onto the port (~250nS setup)
+    LCD_DATA = data;
     // Select the LCD's data register (~125nS setup)
     SET_A0;
-    for (col = 0; col < 128; col++)
-    {
-      // Press the data onto the port (~250nS setup)
-      LCD_DATA = pgm_read_byte(&image[page][col]);
-      // Make a low pulse on RWR to clock the data (~125nS pulse width)
-      CLR_WR;
-      SET_WR;
-    }
+    // Make a low pulse on WR to clock the data (~125nS pulse width)
+    CLR_WR;
+    SET_WR;
   }
-}
+  //----------------------------------------------------------------------------
+  /// This function is used to send an entire image
+  void lcd_image_send(const char image[8][128])
+  {
+    uint8_t page;
+    uint8_t col;
+
+    for (page = 0; page < 8; page++) // 8?
+    {
+      lcd_page_address_set(page);
+      lcd_column_address_set(0);
+      // Select the LCD's data register (~125nS setup)
+      SET_A0;
+      for (col = 0; col < 128; col++)
+      {
+        // Press the data onto the port (~250nS setup)
+        LCD_DATA = pgm_read_byte(&image[page][col]);
+        // Make a low pulse on RWR to clock the data (~125nS pulse width)
+        CLR_WR;
+        SET_WR;
+      }
+    }
+
+ 
+  }
+
 #elif defined(PARALLEL_6800)
-void lcd_cmd_send(uint8_t data)
-{
-  // Press the data onto the port (~250nS setup)
-  LCD_DATA = data;
-  // Select the LCD's command register (~125nS setup)
-  CLR_A0;
-  // Make a low pulse on RWR to clock the data (~125nS pulse width)
-  CLR_RWR;
-  SET_RWR;
-}
-//----------------------------------------------------------------------------
-/// This function is used to send a single data byte
-void lcd_data_send(uint8_t data)
-{
-  // Press the data onto the port (~250nS setup)
-  LCD_DATA = data;
-  // Select the LCD's data register (~125nS setup)
-  SET_A0;
-  // Make a low pulse on RWR to clock the data (~125nS pulse width)
-  CLR_RWR;
-  SET_RWR;
-}
-//----------------------------------------------------------------------------
-/// This function is used to send an entire image
-void lcd_image_send(const char image[8][128])
-{
-  uint8_t page;
-  uint8_t col;
-
-  for (page = 0; page < 8; page++) // 8?
+  void lcd_cmd_send(uint8_t data)
   {
-    lcd_page_address_set(page);
-    lcd_column_address_set(0);
+    // Press the data onto the port (~250nS setup)
+    LCD_DATA = data;
+    // Select the LCD's command register (~125nS setup)
+    CLR_A0;
+    // Make a low pulse on RWR to clock the data (~125nS pulse width)
+    CLR_RWR;
+    SET_RWR;
+  }
+  //----------------------------------------------------------------------------
+  /// This function is used to send a single data byte
+  void lcd_data_send(uint8_t data)
+  {
+    // Press the data onto the port (~250nS setup)
+    LCD_DATA = data;
     // Select the LCD's data register (~125nS setup)
     SET_A0;
-    for (col = 0; col < 128; col++)
+    // Make a low pulse on RWR to clock the data (~125nS pulse width)
+    CLR_RWR;
+    SET_RWR;
+  }
+  //----------------------------------------------------------------------------
+  /// This function is used to send an entire image
+  void lcd_image_send(const char image[8][128])
+  {
+    uint8_t page;
+    uint8_t col;
+
+    for (page = 0; page < 8; page++) // 8?
     {
-      // Press the data onto the port (~250nS setup)
-      LCD_DATA = pgm_read_byte(&image[page][col]);
-      // Make a low pulse on RWR to clock the data (~125nS pulse width)
-      CLR_RWR;
-      SET_RWR;
+      lcd_page_address_set(page);
+      lcd_column_address_set(0);
+      // Select the LCD's data register (~125nS setup)
+      SET_A0;
+      for (col = 0; col < 128; col++)
+      {
+        // Press the data onto the port (~250nS setup)
+        LCD_DATA = pgm_read_byte(&image[page][col]);
+        // Make a low pulse on RWR to clock the data (~125nS pulse width)
+        CLR_RWR;
+        SET_RWR;
+      }
     }
   }
-}
 #endif //interface select
 //----------------------------------------------------------------------------
 void lcd_page_address_set(uint8_t page)
@@ -462,18 +523,13 @@ void lcd_init()
   //If your hardware shares the data bus (nothing wrong with that) then
   //you will want to manage the CS line.
   CLR_CS;
-  //For this simple demonstration code, we never read the LCD, so we
-  //will just park the read line high. If you want to read the LCD, you
-  //would want to control the RD line.
   //
-  // This initialization code is based on the ST7565P Ver2.1a datasheet, the
-  // section titled:
-  //         "2. When the built-in power is not being used
-  //          immediately after turning on the power"
-  // Page 53 of:
-  //   http://www.crystalfontz.com/controllers/Sitronix/ST7565P/
+  // This initialization code is based on the ST7567 datasheet Power ON flow:
+  //   http://www.crystalfontz.com/controllers/Sitronix/ST7567/
+
   //Hardware reset pulse
   CLR_RESET;
+  // read_status(0);
   //"Wait for the power stabilized"
   _delay_ms(50);
   SET_RESET;
@@ -486,6 +542,8 @@ void lcd_init()
   // Now we are in sleep mode
   lcd_cmd_send(0xAE);
   lcd_cmd_send(0xA5);
+  // read_status(1);
+
   // LCD bias setting
   //  0xA2 = 1/9 bias @ 1/65 duty
   //  0xA3 = 1/7 bias @ 1/65 duty
@@ -670,7 +728,7 @@ void loop()
 
   //Logo
   //Send the image from the flash to the LCD.
-  lcd_send_image(cfao12864d3_logo);
+  lcd_image_send(cfag12864q1_logo);
   _delay_ms(2500);
 
   //Odd vertical lines
@@ -689,7 +747,7 @@ void loop()
     }
   }
   _delay_ms(1500);
-    
+  //read_status(2);  
   //Even vertical lines
   for(uint8_t page = 0; page < 8; page++)
   {
@@ -706,7 +764,7 @@ void loop()
     }
   }
   _delay_ms(1500);
-    
+  //read_status(3);    
   //Odd check
   for(uint8_t page = 0; page < 8; page++)
   {
@@ -740,5 +798,6 @@ void loop()
     }
   }
   _delay_ms(1500);
+  // print_statuses(statuses);
 } // void loop()
 //============================================================================
